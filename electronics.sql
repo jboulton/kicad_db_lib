@@ -1,9 +1,14 @@
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 DROP TABLE IF EXISTS parts CASCADE;
 DROP TABLE IF EXISTS supplier CASCADE;
 DROP TABLE IF EXISTS parts_supplier CASCADE;
+DROP TABLE IF EXISTS kicad_project CASCADE;
+DROP TABLE IF EXISTS kicad_project_bom CASCADE;
 
 CREATE TABLE parts (
-    parts_id bigserial PRIMARY KEY,
+    parts_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
     description TEXT,
     component_type TEXT CHECK(
         component_type = '' OR
@@ -24,12 +29,16 @@ CREATE TABLE parts (
     symbol_ref TEXT,
     model_ref TEXT,
     kicad_part_number TEXT NOT NULL UNIQUE,
+    manufacturer_part_number TEXT,
+    manufacturer TEXT,
+    manufacturer_part_url TEXT,
     note TEXT,
     published timestamp without time zone DEFAULT now(),
     value TEXT NOT NULL
 );
 
 CREATE TABLE supplier (
+    supplier_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
     supplier_name TEXT NOT NULL UNIQUE,
     supplier_address TEXT,
     supplier_web_url TEXT,
@@ -38,17 +47,29 @@ CREATE TABLE supplier (
 );
 
 CREATE TABLE parts_supplier (
-    parts_supplier_id bigserial PRIMARY KEY,
+    parts_supplier_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
     supplier_name TEXT NOT NULL REFERENCES supplier (supplier_name),
     kicad_part_number TEXT NOT NULL REFERENCES parts (kicad_part_number),
     supplier_part_number TEXT NOT NULL,
-    manufacturer_part_number TEXT,
-    manufacturer TEXT,
-    manufacturer_part_url TEXT,
     supplier_part_url TEXT,
     price MONEY,
     price_currency TEXT,
     quantity INTEGER
+);
+
+CREATE TABLE kicad_project(
+    kicad_project_design_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    description TEXT,
+    date timestamp without time zone DEFAULT now(),
+    version TEXT UNIQUE,
+    project_ref TEXT
+);
+
+CREATE TABLE kicad_project_bom(
+    kicad_project_bom_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    kicad_project_design_uuid UUID NOT NULL REFERENCES kicad_project (kicad_project_design_uuid),
+    parts_supplier_uuid UUID REFERENCES parts_supplier (parts_supplier_uuid)
 );
 
 INSERT INTO supplier(
@@ -69,7 +90,6 @@ VALUES
 
 CREATE VIEW resistors AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -80,15 +100,9 @@ CREATE VIEW resistors AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -99,7 +113,6 @@ CREATE VIEW resistors AS
 
 CREATE VIEW capacitors AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -110,15 +123,9 @@ CREATE VIEW capacitors AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -129,7 +136,6 @@ CREATE VIEW capacitors AS
 
 CREATE VIEW Connectors AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -140,15 +146,9 @@ CREATE VIEW Connectors AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -159,7 +159,6 @@ CREATE VIEW Connectors AS
 
 CREATE VIEW diodes AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -170,15 +169,9 @@ CREATE VIEW diodes AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -189,7 +182,6 @@ CREATE VIEW diodes AS
 
 CREATE VIEW electro_mechanicals AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -200,15 +192,9 @@ CREATE VIEW electro_mechanicals AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -219,7 +205,6 @@ CREATE VIEW electro_mechanicals AS
 
 CREATE VIEW inductors AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -230,15 +215,9 @@ CREATE VIEW inductors AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -249,7 +228,6 @@ CREATE VIEW inductors AS
 
 CREATE VIEW optos AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -260,15 +238,10 @@ CREATE VIEW optos AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -279,7 +252,6 @@ CREATE VIEW optos AS
 
 CREATE VIEW op_amps AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -290,15 +262,9 @@ CREATE VIEW op_amps AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -309,7 +275,6 @@ CREATE VIEW op_amps AS
 
 CREATE VIEW transisters AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -320,15 +285,9 @@ CREATE VIEW transisters AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -339,7 +298,6 @@ CREATE VIEW transisters AS
 
 CREATE VIEW power_supply_ic AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -350,15 +308,10 @@ CREATE VIEW power_supply_ic AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
@@ -369,7 +322,6 @@ CREATE VIEW power_supply_ic AS
 
 CREATE VIEW semiconductors AS
     SELECT
-        p.parts_id,
         p.datasheet,
         p.description,
         p.component_type,
@@ -380,18 +332,35 @@ CREATE VIEW semiconductors AS
         p.note,
         p.published,
         p.value,
-        ps.supplier_name,
-        ps.supplier_part_number,
-        ps.manufacturer_part_number,
-        ps.manufacturer_part_url,
-        ps.manufacturer,
-        ps.supplier_part_url,
-        ps.price,
-        ps.price_currency,
-        ps.quantity
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
     FROM
         parts p
     JOIN
         parts_supplier ps ON ps.kicad_part_number = p.kicad_part_number
     WHERE
         p.component_type = 'Semiconductor';
+
+
+CREATE VIEW misc AS
+    SELECT
+        p.datasheet,
+        p.description,
+        p.component_type,
+        p.footprint_ref,
+        p.symbol_ref,
+        p.model_ref,
+        p.kicad_part_number,
+        p.note,
+        p.published,
+        p.value,
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
+    FROM
+        parts p
+    JOIN
+        parts_supplier ps ON ps.kicad_part_number = p.kicad_part_number
+    WHERE
+        p.component_type = '';
