@@ -7,8 +7,8 @@
     "source": {
         "type": "odbc",
         "dsn": "DSN_PostgreSQL_KiCAD",
-        "username": "electronics",
-        "password": "cadmax1986",
+        "username": "",
+        "password": "",
         "timeout_seconds": 10,
         "connection_string": ""
     },
@@ -20,6 +20,13 @@
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
             "fields": [
+                {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
                 {
                     "column": "description",
                     "name": "Description",
@@ -79,6 +86,13 @@
             "footprints": "footprint_ref",
             "fields": [
                 {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
                     "column": "description",
                     "name": "Description",
                     "visible_on_add": false,
@@ -136,6 +150,13 @@
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
             "fields": [
+                {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
                 {
                     "column": "description",
                     "name": "Description",
@@ -202,6 +223,13 @@
             "footprints": "footprint_ref",
             "fields": [
                 {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
                     "column": "description",
                     "name": "Description",
                     "visible_on_add": false,
@@ -259,6 +287,13 @@
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
             "fields": [
+                {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
                 {
                     "column": "description",
                     "name": "Description",
@@ -318,6 +353,13 @@
             "footprints": "footprint_ref",
             "fields": [
                 {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
                     "column": "description",
                     "name": "Description",
                     "visible_on_add": false,
@@ -375,6 +417,13 @@
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
             "fields": [
+                {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
                 {
                     "column": "description",
                     "name": "Description",
@@ -434,6 +483,13 @@
             "footprints": "footprint_ref",
             "fields": [
                 {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
                     "column": "description",
                     "name": "Description",
                     "visible_on_add": false,
@@ -491,6 +547,13 @@
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
             "fields": [
+                {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
                 {
                     "column": "description",
                     "name": "Description",
@@ -550,6 +613,13 @@
             "footprints": "footprint_ref",
             "fields": [
                 {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
                     "column": "description",
                     "name": "Description",
                     "visible_on_add": false,
@@ -608,6 +678,13 @@
             "footprints": "footprint_ref",
             "fields": [
                 {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
                     "column": "description",
                     "name": "Description",
                     "visible_on_add": false,
@@ -665,6 +742,13 @@
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
             "fields": [
+                {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
                 {
                     "column": "description",
                     "name": "Description",
