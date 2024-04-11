@@ -17,6 +17,7 @@ CREATE TABLE parts (
         component_type = 'Connector' OR
         component_type = 'Diode' OR
         component_type = 'Electro Mechanical' OR
+        component_type = 'Mechanical' OR
         component_type = 'Inductor' OR
         component_type = 'Opto' OR
         component_type = 'OpAmp' OR
@@ -29,8 +30,8 @@ CREATE TABLE parts (
     symbol_ref TEXT NOT NULL,
     model_ref TEXT NOT NULL DEFAULT '',
     kicad_part_number TEXT NOT NULL PRIMARY KEY,
-    manufacturer_part_number TEXT NOT NULL,
-    manufacturer TEXT NOT NULL,
+    manufacturer_part_number TEXT NOT NULL DEFAULT '',
+    manufacturer TEXT NOT NULL DEFAULT '',
     manufacturer_part_url TEXT DEFAULT '',
     note TEXT DEFAULT '',
     published timestamp without time zone DEFAULT now(),
@@ -69,7 +70,10 @@ CREATE TABLE kicad_project(
 CREATE TABLE kicad_project_bom(
     kicad_project_bom_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
     kicad_project_design_uuid UUID NOT NULL REFERENCES kicad_project (kicad_project_design_uuid),
-    parts_supplier_uuid UUID REFERENCES parts_supplier (parts_supplier_uuid)
+    parts_supplier_uuid UUID REFERENCES parts_supplier (parts_supplier_uuid),
+    reference TEXT NOT NULL,
+    quantity INT NOT NULL,
+    do_not_place BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 INSERT INTO supplier(
@@ -88,9 +92,16 @@ VALUES
         ''
     );
 
+
+-- Test to make sure it works.
 INSERT INTO parts (description , value, component_type, datasheet, footprint_ref, symbol_ref, kicad_part_number, manufacturer, manufacturer_part_number)
 VALUES
-('RES 10K OHM 1% 1/10W 0603', '10K','Resistor', 'https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf', 'db_footprints:R_0603_1608Metric', 'db_library:R', '10K_0603', 'YAGEO', 'RC0603FR-0710KL');
+('RES 10K OHM 1% 1/10W 0603', '10K','Resistor', 'https://www.yageo.com/upload/media/product/products/datasheet/rchip/PYu-RC_Group_51_RoHS_L_12.pdf', 'db_footprints:R_0603_1608Metric', 'db_library:R', '10K_0603', 'YAGEO', 'RC0603FR-0710KL'),
+('CONN RCPT 100POS SMD GOLD', '100POS', 'Connector', 'https://www.hirose.com/en/product/document?clcode=&productname=&series=DF40&documenttype=Catalog&lang=en&documentid=en_DF40_CAT', 'db_footprints:CONN_DF40C-100DS-0.4V51_HIR', 'db_library:DF40C-100DS-0.4V51', 'CONN_100POS_HIROSE_SMD', 'Hirose Electric Co Ltd', 'DF40C-100DS-0.4V(51)'),
+('Mounting Hole, 2.7mm for M2.5mm', 'M2.5', 'Mechanical', '', 'db_footprints:MountingHole_2.7mm_M2.5', 'db_library:MountingHole', 'MH_2.7MM_M2.5', '', '');
+INSERT INTO parts_supplier(supplier_name, kicad_part_number, supplier_part_number, supplier_part_url, price, price_currency, quantity)
+VALUES
+('Digikey', '10K_0603', '311-10.0KHRCT-ND', 'https://www.digikey.co.nz/en/products/detail/yageo/RC0603FR-0710KL/726880', 0.18000, 'NZD', 1);
 
 
 CREATE VIEW resistors AS
@@ -186,6 +197,24 @@ CREATE VIEW electro_mechanicals AS
         parts p
     WHERE
         p.component_type = 'Electro Mechanical';
+
+CREATE VIEW mechanicals AS
+    SELECT
+        p.datasheet,
+        p.description,
+        p.component_type,
+        p.footprint_ref,
+        p.symbol_ref,
+        p.kicad_part_number,
+        p.note,
+        p.value,
+        p.manufacturer_part_number,
+        p.manufacturer_part_url,
+        p.manufacturer
+    FROM
+        parts p
+    WHERE
+        p.component_type = 'Mechanical';
 
 
 CREATE VIEW inductors AS
