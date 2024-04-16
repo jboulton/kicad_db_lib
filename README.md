@@ -15,4 +15,5 @@ A work in progress, check back soonish for something useable.
 5) edit odbc.ini to connect to your kicad_lib database.
 6) copy odbc.ini to the apropriate odbc directory for your operating system.
 7) Open KiCAD and add DB_LIB_3DMODEL_DIR pointing your forked repo 3d_models directory
-8) Install the 
+8) Install the libraries kicad_db_lib.kicad_dbl, symbols/db_library.kicad_sym, and footprints/db_footprints.pretty
+
