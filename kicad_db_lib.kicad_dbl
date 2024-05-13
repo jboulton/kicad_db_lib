@@ -14,6 +14,71 @@
     },
     "libraries": [
         {
+            "name": "Modules",
+            "table": "modules",
+            "key": "kicad_part_number",
+            "symbols": "symbol_ref",
+            "footprints": "footprint_ref",
+            "fields": [
+                {
+                    "column": "datasheet",
+                    "name": "Datasheet",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
+                    "column": "description",
+                    "name": "Description",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
+                    "column": "note",
+                    "name": "Note",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
+                    "column": "manufacturer",
+                    "name": "Manufacturer",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
+                    "column": "manufacturer_part_number",
+                    "name": "Manufacturer Part Number",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
+                    "column": "manufacturer_part_url",
+                    "name": "Manufacturer Part URL",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
+                    "column": "component_type",
+                    "name": "Type",
+                    "visible_on_add": false,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                },
+                {
+                    "column": "value",
+                    "name": "Value",
+                    "visible_on_add": true,
+                    "visible_in_chooser": true,
+                    "show_name": false
+                }
+            ]
+        },
+        {
             "name": "Resistors",
             "table": "resistors",
             "key": "kicad_part_number",

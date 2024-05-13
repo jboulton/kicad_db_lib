@@ -38,6 +38,30 @@ CREATE TABLE parts (
     value TEXT NOT NULL
 );
 
+
+CREATE TABLE module (
+    module_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    description TEXT NOT NULL,
+    component_type TEXT not null DEFAULT 'Module',
+    datasheet TEXT DEFAULT '',
+    footprint_ref TEXT NOT NULL,
+    symbol_ref TEXT NOT NULL,
+    model_ref TEXT NOT NULL DEFAULT '',
+    kicad_part_number TEXT NOT NULL PRIMARY KEY,
+    manufacturer_part_number TEXT NOT NULL DEFAULT '',
+    manufacturer TEXT NOT NULL DEFAULT '',
+    manufacturer_part_url TEXT DEFAULT '',
+    note TEXT DEFAULT '',
+    published timestamp without time zone DEFAULT now(),
+    value TEXT NOT NULL
+);
+
+CREATE TABLE module_parts (
+    module_parts_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    mudule_uuid UUID NOT NULL REFERENCES module (module_uuid),
+    part_uuid UUID NOT NULL REFERENCES parts (parts_uuid)
+);
+
 CREATE TABLE supplier (
     supplier_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
     supplier_name TEXT NOT NULL UNIQUE,
@@ -102,6 +126,25 @@ VALUES
 INSERT INTO parts_supplier(supplier_name, kicad_part_number, supplier_part_number, supplier_part_url, price, price_currency, quantity)
 VALUES
 ('Digikey', '10K_0603', '311-10.0KHRCT-ND', 'https://www.digikey.co.nz/en/products/detail/yageo/RC0603FR-0710KL/726880', 0.18000, 'NZD', 1);
+
+
+
+
+CREATE VIEW modules AS
+    SELECT
+        m.datasheet,
+        m.description,
+        m.component_type,
+        m.footprint_ref,
+        m.symbol_ref,
+        m.kicad_part_number,
+        m.note,
+        m.value,
+        m.manufacturer_part_number,
+        m.manufacturer_part_url,
+        m.manufacturer
+    FROM
+        module m;
 
 
 CREATE VIEW resistors AS
