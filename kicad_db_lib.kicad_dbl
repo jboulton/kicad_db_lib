@@ -50,7 +50,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -115,7 +115,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -180,7 +180,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -245,7 +245,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -317,7 +317,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -382,7 +382,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -446,7 +446,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -511,7 +511,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -576,7 +576,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -641,7 +641,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -706,7 +706,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -771,7 +771,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -836,7 +836,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -901,7 +901,7 @@
                 },
                 {
                     "column": "manufacturer_part_number",
-                    "name": "Manufacturer Part Number",
+                    "name": "mpn",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
