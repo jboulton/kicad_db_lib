@@ -1,1 +1,1 @@
-# Smmething erudite may appear here soonish.
+# Something erudite may appear here soonish.
