@@ -270,13 +270,6 @@
                     "visible_on_add": true,
                     "visible_in_chooser": true,
                     "show_name": false
-                },
-                {
-                    "column": "price",
-                    "name": "Price",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
                 }
             ]
         },
