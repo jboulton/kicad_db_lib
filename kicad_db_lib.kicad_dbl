@@ -3,7 +3,7 @@
         "version": 0
     },
     "name": "KiCad Database Library",
-    "description": "KiCad components database",
+    "description": "KiCAD Component Database",
     "source": {
         "type": "odbc",
         "dsn": "DSN_PostgreSQL_KiCAD",
@@ -16,20 +16,17 @@
         {
             "name": "Modules",
             "table": "modules",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "description": "Module",
+            "properties": {
+                "description": "description"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -81,20 +78,19 @@
         {
             "name": "Resistors",
             "table": "resistors",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -146,20 +142,19 @@
         {
             "name": "Capacitors",
             "table": "capacitors",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -211,20 +206,19 @@
         {
             "name": "Connectors",
             "table": "connectors",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -276,20 +270,19 @@
         {
             "name": "Diodes",
             "table": "diodes",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -341,20 +334,19 @@
         {
             "name": "Electro Mechanical",
             "table": "electro_mechanicals",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -405,20 +397,19 @@
         },{
             "name": "Mechanical",
             "table": "mechanicals",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -470,20 +461,19 @@
         {
             "name": "Inductors",
             "table": "inductors",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -535,20 +525,19 @@
         {
             "name": "Optos",
             "table": "optos",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -599,21 +588,20 @@
         },
         {
             "name": "OpAmps",
-            "table": "OpAmps",
-            "key": "kicad_part_number",
+            "table": "op_amps",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -665,20 +653,19 @@
         {
             "name": "Transisters",
             "table": "transisters",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -730,20 +717,19 @@
         {
             "name": "Power Supply ICs",
             "table": "power_supply_ic",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -795,20 +781,19 @@
         {
             "name": "Semiconductors",
             "table": "semiconductors",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false
@@ -860,20 +845,19 @@
         {
             "name": "Misc",
             "table": "misc",
-            "key": "kicad_part_number",
+            "key": "key",
             "symbols": "symbol_ref",
             "footprints": "footprint_ref",
+            "properties": {
+                "description": "description",
+                "exclude_from_bom": "exclude_from_bom",
+                "exclude_from_board": "exclude_from_board",
+                "exclude_from_sim": "exclude_from_sim"
+            },
             "fields": [
                 {
                     "column": "datasheet",
                     "name": "Datasheet",
-                    "visible_on_add": false,
-                    "visible_in_chooser": true,
-                    "show_name": false
-                },
-                {
-                    "column": "description",
-                    "name": "Description",
                     "visible_on_add": false,
                     "visible_in_chooser": true,
                     "show_name": false

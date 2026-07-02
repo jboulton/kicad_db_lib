@@ -1,5 +1,4 @@
-
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Requires postgresql > v18
 
 DROP TABLE IF EXISTS parts CASCADE;
 DROP TABLE IF EXISTS supplier CASCADE;
@@ -8,7 +7,7 @@ DROP TABLE IF EXISTS kicad_project CASCADE;
 DROP TABLE IF EXISTS kicad_project_bom CASCADE;
 
 CREATE TABLE parts (
-    parts_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    parts_uuid UUID UNIQUE DEFAULT uuidv7(),
     description TEXT NOT NULL,
     component_type TEXT CHECK(
         component_type = '' OR
@@ -33,6 +32,9 @@ CREATE TABLE parts (
     manufacturer_part_number TEXT NOT NULL DEFAULT '',
     manufacturer TEXT NOT NULL DEFAULT '',
     manufacturer_part_url TEXT DEFAULT '',
+    exclude_from_bom BOOLEAN NOT NULL DEFAULT FALSE,
+    exclude_from_board BOOLEAN NOT NULL DEFAULT FALSE,
+    exclude_from_sim BOOLEAN NOT NULL DEFAULT FALSE,
     note TEXT DEFAULT '',
     published timestamp without time zone DEFAULT now(),
     value TEXT NOT NULL
@@ -40,7 +42,7 @@ CREATE TABLE parts (
 
 
 CREATE TABLE module (
-    module_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    module_uuid UUID UNIQUE DEFAULT uuidv7(),
     description TEXT NOT NULL,
     component_type TEXT not null DEFAULT 'Module',
     datasheet TEXT DEFAULT '',
@@ -57,13 +59,13 @@ CREATE TABLE module (
 );
 
 CREATE TABLE module_parts (
-    module_parts_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    module_parts_uuid UUID UNIQUE DEFAULT uuidv7(),
     mudule_uuid UUID NOT NULL REFERENCES module (module_uuid),
     part_uuid UUID NOT NULL REFERENCES parts (parts_uuid)
 );
 
 CREATE TABLE supplier (
-    supplier_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    supplier_uuid UUID UNIQUE DEFAULT uuidv7(),
     supplier_name TEXT NOT NULL UNIQUE,
     supplier_address TEXT,
     supplier_web_url TEXT,
@@ -72,7 +74,7 @@ CREATE TABLE supplier (
 );
 
 CREATE TABLE parts_supplier (
-    parts_supplier_uuid UUID UNIQUE DEFAULT gen_random_uuid(),
+    parts_supplier_uuid UUID UNIQUE DEFAULT uuidv7(),
     supplier_name TEXT NOT NULL REFERENCES supplier (supplier_name),
     kicad_part_number TEXT NOT NULL REFERENCES parts (kicad_part_number),
     supplier_part_number TEXT NOT NULL,
@@ -129,7 +131,7 @@ VALUES
 
 
 
-
+DROP VIEW modules;
 CREATE VIEW modules AS
     SELECT
         m.datasheet,
@@ -142,11 +144,12 @@ CREATE VIEW modules AS
         m.value,
         m.manufacturer_part_number,
         m.manufacturer_part_url,
-        m.manufacturer
+        m.manufacturer,
+        m.manufacturer || ' - ' || m.manufacturer_part_number AS key
     FROM
         module m;
 
-
+DROP VIEW resistors;
 CREATE VIEW resistors AS
     SELECT
         p.datasheet,
@@ -154,18 +157,24 @@ CREATE VIEW resistors AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Resistor';
 
 
+DROP VIEW capacitors;
 CREATE VIEW capacitors AS
     SELECT
         p.datasheet,
@@ -173,18 +182,24 @@ CREATE VIEW capacitors AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Capacitor';
 
 
+DROP VIEW Connectors;
 CREATE VIEW Connectors AS
     SELECT
         p.datasheet,
@@ -192,18 +207,24 @@ CREATE VIEW Connectors AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Connector';
 
 
+DROP VIEW diodes;
 CREATE VIEW diodes AS
     SELECT
         p.datasheet,
@@ -211,18 +232,24 @@ CREATE VIEW diodes AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Diode';
 
 
+DROP VIEW electro_mechanicals;
 CREATE VIEW electro_mechanicals AS
     SELECT
         p.datasheet,
@@ -230,17 +257,23 @@ CREATE VIEW electro_mechanicals AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Electro Mechanical';
 
+DROP VIEW mechanicals;
 CREATE VIEW mechanicals AS
     SELECT
         p.datasheet,
@@ -248,18 +281,24 @@ CREATE VIEW mechanicals AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Mechanical';
 
 
+DROP VIEW inductors;
 CREATE VIEW inductors AS
     SELECT
         p.datasheet,
@@ -267,18 +306,24 @@ CREATE VIEW inductors AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Inductor';
 
 
+DROP VIEW optos;
 CREATE VIEW optos AS
     SELECT
         p.datasheet,
@@ -286,18 +331,24 @@ CREATE VIEW optos AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Opto';
 
 
+DROP VIEW op_amps;
 CREATE VIEW op_amps AS
     SELECT
         p.datasheet,
@@ -305,18 +356,23 @@ CREATE VIEW op_amps AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'OpAmp';
 
-
+DROP VIEW transisters;
 CREATE VIEW transisters AS
     SELECT
         p.datasheet,
@@ -324,18 +380,24 @@ CREATE VIEW transisters AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Transister';
 
 
+DROP VIEW power_supply_ic;
 CREATE VIEW power_supply_ic AS
     SELECT
         p.datasheet,
@@ -343,18 +405,24 @@ CREATE VIEW power_supply_ic AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Power Supply IC';
 
 
+DROP VIEW semiconductors;
 CREATE VIEW semiconductors AS
     SELECT
         p.datasheet,
@@ -362,18 +430,24 @@ CREATE VIEW semiconductors AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
         p.component_type = 'Semiconductor';
 
 
+DROP VIEW misc;
 CREATE VIEW misc AS
     SELECT
         p.datasheet,
@@ -381,12 +455,17 @@ CREATE VIEW misc AS
         p.component_type,
         p.footprint_ref,
         p.symbol_ref,
+        p.parts_uuid::TEXT,
         p.kicad_part_number,
         p.note,
         p.value,
         p.manufacturer_part_number,
         p.manufacturer_part_url,
-        p.manufacturer
+        p.manufacturer,
+        p.exclude_from_bom,
+        p.exclude_from_board,
+        p.exclude_from_sim,
+        p.manufacturer || ' - ' || p.manufacturer_part_number AS key
     FROM
         parts p
     WHERE
